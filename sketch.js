@@ -12,7 +12,7 @@ function draw() {
   ps.addParticle(mouseX, mouseY);
 
   // Apply gravity force to all Particles
-  let gravity = createVector(0, 0.02);
+  let gravity = createVector(0, 0.01);
   ps.applyForce(gravity);
 
   ps.applyRepeller(repeller);
@@ -28,7 +28,7 @@ class Particle {
     this.position = createVector(x, y);
     this.velocity = createVector(random(-1, 1), random(-1, 0));
     this.acceleration = createVector(0, 0);
-    this.lifespan = 255.0;
+    this.lifespan = 200.0;
   }
 
   run() {
@@ -46,15 +46,15 @@ class Particle {
     this.position.add(this.velocity);
     this.lifespan -= 2;
 
-    this.velocity.limit(5);
+    this.velocity.limit(6);
   }
 
   // Method to display
   display() {
-    stroke(255, this.lifespan);
-    strokeWeight(2);
-    fill(255, this.lifespan);
-    ellipse(this.position.x, this.position.y, 12, 12);
+    stroke(255, 204, this.lifespan);
+    strokeWeight(.2);
+    fill(255, 255,  this.lifespan);
+    ellipse(this.position.x, this.position.y, this.lifespan / 8 , this.lifespan / 8);
   }
 
   // Is the particle still useful?
@@ -110,7 +110,7 @@ class ParticleSystem {
 
 class Repeller {
   constructor(x, y) {
-    this.power = 100;
+    this.power = 200;
     this.position = createVector(x, y);
   }
 
@@ -125,8 +125,8 @@ class Repeller {
     let dir = p5.Vector.sub(this.position, p.position); // Calculate direction of force
     let d = dir.mag(); // Distance between objects
     dir.normalize(); // Normalize vector (distance doesn't matter here, we just want this vector for direction)
-    d = constrain(d, 1, 100); // Keep distance within a reasonable range
-    let force = 1 * this.power / (d * d); // Repelling force is inversely proportional to distance
+    d = constrain(d, 1, 200); // Keep distance within a reasonable range
+    let force = 2 * this.power / (d * d); // Repelling force is inversely proportional to distance
     dir.mult(force); // Get force vector --> magnitude * direction
     return dir;
   }
